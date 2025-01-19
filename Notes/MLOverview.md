@@ -67,10 +67,10 @@ _将数据集“喂”给机器学习模型，在Input Features与Output Targets
 
 - **梯度下降算法：$w_i = w_i - \alpha \cdot \frac{\partial{J(w_1, w_2, ..., w_n)}}{\partial{w_i}}$**
   - 学习率$\alpha$：梯度下降中的一个参数，决定了每次更新成本函数中参数$w_i$时的步长大小，$\alpha > 0$。
-  - 梯度： $\frac{\part{J(w_1, w_2, ..., w_n)}}{\part{w_i}}$就是关于某个变量的梯度，表示$J$增长最快的方向。
+  - 梯度： $\frac{\partial{J(w_1, w_2, ..., w_n)}}{\partial{w_i}}$就是关于某个变量的梯度，表示$J$增长最快的方向。
   - 要求每次同时更新成本函数中的所有参数$w_i$。
 
-- 对于一个固定的$\alpha$，梯度下降算法每次更新的$\Delta{w_i}$会变小，因为$\frac{\part{J(w_1, w_2, ..., w_n)}}{\part{w_i}}$会不断变小（在$w_i$不断趋近局部最小值的情况下）。
+- 对于一个固定的$\alpha$，梯度下降算法每次更新的$\Delta{w_i}$会变小，因为$\frac{\partial{J(w_1, w_2, ..., w_n)}}{\partial{w_i}}$会不断变小（在$w_i$不断趋近局部最小值的情况下）。
 
 二维成本函数等高图的梯度下降：
 
@@ -80,7 +80,7 @@ _将数据集“喂”给机器学习模型，在Input Features与Output Targets
 
 学习曲线是用于评估模型性能的工具，展现了模型在不同迭代次数，或者不同数据量下的成本误差。一个有效的模型，它的学习曲线应该是单调递减的，并且最终收敛到一个值。
 
-![Learning Curve](/Users/yzhbradoodrrpurp/Desktop/Notes/Images/C1_W2_Lab06_learningrate.PNG)
+![Learning Curve](/Users/yzhbradoodrrpurp/Desktop/PyTorchZeroToAll/Notes/Images/C1_W2_Lab06_learningrate.PNG)
 
 ## 多元线性回归
 
@@ -118,7 +118,7 @@ _将数据集“喂”给机器学习模型，在Input Features与Output Targets
 - 避免某些特征主导模型：如果有些特征的数值范围远大于其它特征（一个特征范围在0～1，另一个特征范围在0～1000），模型可能会更关注数值变化较大的特征，忽略数值变化较小的特征。
 - 加快收敛速度：在使用梯度下降等优化算法时，特征值范围较大可能导致优化路径震荡，从而减慢收敛速度。在二元线性回归中，进行特征放缩之后的等高图类似于一个圆形，直观上更容易收敛到最优值。
 
-![Regular and Scaled Contour Plots](/Users/yzhbradoodrrpurp/Desktop/Notes/Images/C1_W2_Lab06_contours.PNG)
+![Regular and Scaled Contour Plots](/Users/yzhbradoodrrpurp/Desktop/PyTorchZeroToAll/Notes/Images/C1_W2_Lab06_contours.PNG)
 
 特征缩放的两种常见方式：
 
