@@ -137,6 +137,67 @@ x_norm = (x - x.min()) / (x.max() - x.min())
 x_stand = (x - x.mean()) / x.std()
 ````
 
+### 4. 代码
+
+````python
+import random
+import numpy as np
+import matplotlib.pyplot as plt
+
+def gradient(x, y, w, b):
+  n = len(y)
+  common_part = (x @ w + b - y).sum()
+  w_grad = w * common_part / n
+  b_grad = common_part / n
+  return w_grad, b_grad 
+
+def cost(x, y, w, b):
+	n = len(y)
+  y_pred = x @ w + b
+  j = np.square(y_pred - y).sum() / (2 * n)
+  return j
+
+# training samples
+# X is a matrix every row of which is a sample input
+x = np.array([[...], [...], ...])
+y = np.array([...])
+
+# initial ramdom variable for W and B
+w = np.array([random.random() for _ in range(len(y))])
+b = random.random()
+
+# set learning rate A as 1
+a = 1
+
+# store historical data to plot some graphs
+w_history = []
+j_history = []
+iterations = []
+
+# iterate 100 times to optimize W and B
+for iteration in range(100):
+	w_grad, b_grad = gradient(x, y, w, b)
+  w = w - a * w_grad
+  b = b - a * b_grad
+  
+  j = cost(x, y, w, b)
+  
+  w_history.append(w)
+  j_history.append(j)
+  iterations.append(iteration)
+  
+plt.figure()
+plt.plot(iterations, j_history, color="orange")
+plt.title("Learning Curve")
+plt.xlabel("Iterations")
+plt.ylabel("Cost")
+plt.xticks(np.arange(1, 101, 10))
+````
+
+## 逻辑回归(Logistic Regression)
+
+线性回归用于在连续区间上预测数值，而逻辑回归用于预测分类问题。虽然逻辑回归中有回归两个字，不过实际上它和回归没有关系。
+
 ## Others
 
 ### 1. Train-Time Compute & Test-Time Compute
