@@ -198,6 +198,35 @@ plt.xticks(np.arange(1, 101, 10))
 
 线性回归用于在连续区间上预测数值，而逻辑回归用于预测分类问题。虽然逻辑回归中有回归两个字，不过实际上它和回归没有关系。
 
+### 1. 无法用线性回归解决分类问题
+
+现在有一个数据集，只有一个输入特征x表示肿瘤的大小，输出y为肿瘤是否是恶性。用y=0表示肿瘤不是恶性，y=1表示肿瘤是恶性，那么就可以用线性回归的方式得到一条最佳拟合线，以这条拟合线 $y' = 0.5$ 对应的 $x'$ 为界，小于 $x'$ 的x认为肿瘤不是恶性，大于 $x'$ 认为是恶性。这种方式的问题在于，如果有更多的样本点，预测可能会完全错误。
+
+<img src="Images/tumorsize.PNG" alt="tumorSize" style="zoom:50%;" />
+
+### 2. Sigmoid Function
+
+Sigmoid Function是一种值域只在0～1之间单调递增的函数，相比于线性函数，它能够更有效地进行二元分类。
+
+- 表达式：$y_i = \frac{1}{1 + e^{-z_i}}, z_i = f(\vec{x_i})$
+
+<img src="Images/sigmoidz.png" alt="sigmoid" style="zoom:90%;" />
+
+依然用[肿瘤的例子](# 1. 无法用线性回归解决分类问题)举例，用Sigmoid Function对数据进行拟合，输入样本x，得到预测的y可以视作肿瘤是恶性的概率。Sigmoid Function相较于线性回归的优势在于，极端的特殊情况对模型的影响较小，并且值域在0～1，可以视作二元分类的概率。
+
+### 3. 决策边界(Decision Boundary)
+
+在二元分类问题中，我们需要对Sigmoid Function得到的预测结果（数值），进行分类，当数值大于某一个特定值时，分入A类；当数值小于某一特定值时，分入B类。通常我们选择 $y=0.5$ 进行分类，当 $y=0.5$ 时，$z=0$ 。在[肿瘤](# 1. 无法用线性回归解决分类问题)问题中，如果对于一组样本 $z_i = f(x_i)$ 大于0，那么认为肿瘤为恶性。为了简化问题，假定 $f: z = wx + b$ ，那么当 $x > \frac{-b}{w}$ 时，肿瘤被认定为恶性。这里的 $x = \frac{-b}{w}$ 就是决策边界。
+
+  ### 4. Cost Function
+
+在线性回归中，成本函数选择的是MSE (Mean Square Error)，但是在逻辑回归中，MSE并不是最佳的成本函数选项，因为可能有多个局部最小值 (Local Minima)，这使得梯度下降算法不能达到全局最小值 (Global Minima)。于是我们定义如下新的成本函数 (**Cross-Entropy Loss**)：
+
+- $J = \frac{1}{m} \sum_{i=1}^{m}{L(f(\vec{x_i}), y_i)}$
+- $L(f(\vec{x_i}), y_i) = \begin{cases} -ln(f(\vec{x_i})) & y_i = 1 \\ -ln(1 - f(\vec{x_i})) & y_i = 0 \end{cases}$
+
+该成本函数被称为交叉熵损失函数 (Cross-Entropy Loss)，当 $y_i = 1$ 时，鼓励 $f(\vec{x_i}) \rightarrow 1$ ，这样的话 $L(f(\vec{x_i}), y_i) \rightarrow 0$ ；同理，当 $y_i = 0$ 时，鼓励 $f(\vec{x_i}) \rightarrow 0$ 。**交叉熵损失函数保证了唯一的全局最小值**，便于进行梯度下降。
+
 ## Others
 
 ### 1. Train-Time Compute & Test-Time Compute
