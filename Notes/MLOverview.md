@@ -227,6 +227,29 @@ Sigmoid Function是一种值域只在0～1之间单调递增的函数，相比�
 
 该成本函数被称为交叉熵损失函数 (Cross-Entropy Loss)，当 $y_i = 1$ 时，鼓励 $f(\vec{x_i}) \rightarrow 1$ ，这样的话 $L(f(\vec{x_i}), y_i) \rightarrow 0$ ；同理，当 $y_i = 0$ 时，鼓励 $f(\vec{x_i}) \rightarrow 0$ 。**交叉熵损失函数保证了唯一的全局最小值**，便于进行梯度下降。
 
+### 5. Code to Implement Logistic Regression
+
+````python
+import numpy as np
+import matplotlib.pyplot as plt
+import random
+
+# simplify the model to y=wx
+# samples for logistic regression
+x = np.array([...])
+y = np.array([...])
+
+# select random values for W
+w = np.array([random.random() for _ in range(50)])
+
+j_history = []
+w_history = []
+
+# iterate 100 times to optimize W
+for iteration in range(100):
+  pass
+````
+
 ## 过拟合(Overfitting)
 
 通常我们希望拟合函数的成本函数能够尽可能地小，这样就表明该拟合函数相对正确。为了达到使成本函数尽可能小的目的，我们会选择使用多项式 (Polynomial) 来对数据进行拟合，$y_i = w x_i + b \longrightarrow y_i = w_1 x_i^3 + w_2 x_i^2 + w_3 x_i + b$ ，所以一个线性回归问题就会升级为非线性回归。但是在使用多项式对数据进行拟合时，可能会出现过拟合的问题。**所谓过拟合，就是拟合函数完美穿过所有的训练集，但是在实际的场景中表现得很糟糕。**
@@ -249,24 +272,11 @@ Sigmoid Function是一种值域只在0～1之间单调递增的函数，相比�
 - 筛选属性：部分特征之间可能存在极高的相关性 (High Covariance)，我们只需要相关性不高的特征，减少特征个数降低模型复杂度。
 - 正则化：**使模型参数限定在某些范围，能够降低某些特征的权重。**相较于直接筛选特征而言，正则化并没有完全剔除某些特征的影响，而是降低某些特征的影响。
 
-## Others
+#### 正则化(Regularization)
 
-### 1. Train-Time Compute & Test-Time Compute
+由于更简单的模型更具有泛化性，所以我们往往会对特征进行筛选，减少特征数进而简化模型。当一个特征 $x_i$ 被筛去时，可以认为其对应的权重 $w_i = 0$ 。但是当特征数量多起来时，我们可能无法决定哪些特征应该被筛去哪些特征应该被保留，所以我们需要在成本函数中引入一个**惩罚项**，对模型的复杂度进行一定的限制。**这样做的目的在于，使得引入惩罚项之后的成本函数最小，可以在最小化误差和最小化复杂度之间达到一个平衡。**
 
-**Train-time compute** 和 **test-time compute** 是机器学习和深度学习中的两个重要概念，主要用于描述模型在训练阶段和测试阶段的计算需求。
+- 惩罚项：$\frac{\lambda}{2n}\sum_{i=1}^{n}{w_i^2}$ ，$n$ 是特征个数
+- 最终表达式：$J' = J + \frac{\lambda}{2n}\sum_{j=1}^{n}{w_j^2}$
 
-#### Train-Time Compute(训练时计算)
-
-训练时计算就是在模型训练过程中进行的计算，包括了前向传播、损失计算、反向传播以及参数更新等步骤。
-
-- 在训练过程中，模型会不断优化参数以减少误差（例如通过梯度下降算法）。这需要大量的计算，尤其是在数据量大、模型复杂时，计算负担更为沉重。
-- 训练时计算通常要求较强的计算资源，因为每次迭代都涉及到大量的矩阵运算和梯度计算。
-
-#### Test-Time Compute(测试时计算)
-
-测试时计算是指在模型训练完成后，使用测试数据进行推理（预测）时所进行的计算。此时，模型的参数已经固定，不再进行训练。
-
-- 测试时的计算相对较轻，通常只包括前向传播过程，即给定输入数据，模型计算出输出结果。
-- 测试时计算一般要求较低的计算资源，因为没有训练步骤的计算，主要是用于预测。
-
-<!--Test-Time Compute 通过增加推理过程中的计算量（即让模型“思考更久”），能够提高模型在解决较为复杂问题时的表现，而不是通过修改模型的参数来提高准确性。-->
+注意到惩罚项中有一个标量系数 $\lambda$ ，它代表着**模型精确度和模型复杂度之间的取舍 (Tradeoff between reducing MSE and minimizing overfitting) **。通常当 $\lambda$ 越大时，$w_i, i = 1, 2, 3, ...$ 就会越小。
