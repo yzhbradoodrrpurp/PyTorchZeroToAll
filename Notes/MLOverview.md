@@ -1,4 +1,4 @@
-# ML Overview
+# Andrew Ng's ML Course Pt.1
 
 ## Several Main Fields in ML
 
@@ -234,20 +234,62 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
+def forward(x, w):
+  y_hat = w * x
+  return y_hat
+
+def cost(y, y_hat):
+  m = len(y)
+  j = [-1 * np.log(y_hat[i]) if y[i] == 1 else -1 * np.log(1 - y_hat[i]) for i in range(m)].sum()
+  return j
+  
+def gradient(x, y, w):
+	m = len(x)
+  w_grad = [-1 / w if y[i] == 1 else x[i] / (1 - x[i]) for i in range(m)].sum()
+  return w_grad
+  
 # simplify the model to y=wx
 # samples for logistic regression
 x = np.array([...])
 y = np.array([...])
 
 # select random values for W
-w = np.array([random.random() for _ in range(50)])
+w = random.random()
 
+# set learning rate a as 1
+a = 1
+
+# record the history for plotting
 j_history = []
 w_history = []
+iterations = []
 
 # iterate 100 times to optimize W
 for iteration in range(100):
-  pass
+  y_hat = forward(x, w)
+  j = cost(y, y_hat)
+  w_grad = gradient(x, y, w)
+  
+  w = w - a * w_grad
+  
+  j_history.append(j)
+  w_history.append(w)
+  iterations.append(iteration + 1)
+  
+plt.figure()
+
+plt.subplot(1, 2, 1)
+plt.plot(w_history, j_history)
+plt.title("Cost Over W")
+plt.xlabel("W")
+plt.ylabel("J")
+  
+plt.subplot(iterations, j_history)
+plt.title("Learning Curve")
+plt.xlabel("Iterations")
+plt.ylabel("J")
+
+plt.show()
 ````
 
 ## 过拟合(Overfitting)
